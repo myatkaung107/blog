@@ -27,7 +27,7 @@ include('header.html');
                 }else {
                   $pageno = 1;
                 }
-                $numOfrecs = 1;
+                $numOfrecs = 4;
                 $offset = ($pageno - 1) * $numOfrecs;
 
                 if (empty($_POST['search'])) {
@@ -36,6 +36,7 @@ include('header.html');
                   $pdostmt = $pdo -> prepare("SELECT * FROM posts ORDER BY id DESC");
                   $pdostmt-> execute();
                   $rawResult = $pdostmt->fetchAll();
+                  
                   $total_pages = ceil(count($rawResult)/$numOfrecs);
 
                   $pdostmt = $pdo -> prepare("SELECT * FROM posts ORDER BY id DESC LIMIT $offset,$numOfrecs");

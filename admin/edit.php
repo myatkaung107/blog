@@ -11,9 +11,7 @@ if ($_POST) {
   $id = $_POST['id'];
   $title = $_POST['title'];
   $content = $_POST['content'];
-  if ($_FILES['image']['name'] !=null) {
-    print"<pre>";
-    print_r($_FILES['image']['name']);exit();
+  if ($_FILES['image']['name'] !=null) {  
     $file = 'images/'.($_FILES['image']['name']);
     $imageType = pathinfo($file,PATHINFO_EXTENSION);
     if ($imageType !='png' && $imageType !='jpg' && $imageType !='jpeg') {
