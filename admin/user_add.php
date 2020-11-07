@@ -8,6 +8,7 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
 if ($_POST) {
     $name = $_POST['name'];
     $email = $_POST['email'];
+    $password= $_POST['password'];
     if (empty($_POST['role'])) {
       $role=0;
     }else {
@@ -22,10 +23,10 @@ if ($_POST) {
     if ($user) {
       echo "<script>alert('Email already used')</script>";
     }else {
-      $pdostmt= $pdo-> prepare("INSERT INTO users(name,email,role) VALUES (:name,:email,:role)");
+      $pdostmt= $pdo-> prepare("INSERT INTO users(name,email,password,role) VALUES (:name,:email,:password,:role)");
       $result=$pdostmt->execute(
         array(
-          ':name'=>$name,':email'=>$email,':role'=>$role)
+          ':name'=>$name,':email'=>$email,':password'=>$password,':role'=>$role)
       );
       if ($result) {
         echo "<script>alert('New user is added');window.location.href='user_list.php';</script>";
@@ -49,6 +50,10 @@ if ($_POST) {
                 <div class="form-group">
                   <label for="">Email</label>
                   <input type="email" class="form-control" name="email" value="" required>
+                </div>
+                <div class="form-group">
+                  <label for="">Password</label>
+                  <input type="password" class="form-control" name="password" value="" required>
                 </div>
                 <div class="form-group">
                   <label for="vehicle3">Admin</label><br>

@@ -14,11 +14,14 @@
   $cmstmt->execute();
   $cmResult=$cmstmt->fetchAll();
 
+  $auResult=[];
   if ($cmResult) {
-    $auId=$cmResult[0]['author_id'];
-    $austmt=$pdo->prepare("SELECT * FROM users WHERE id=$auId");
-    $austmt->execute();
-    $auResult=$austmt->fetchAll();
+    foreach ($cmResult as $key => $value) {
+      $auId=$cmResult[$key]['author_id'];
+      $austmt=$pdo->prepare("SELECT * FROM users WHERE id=$auId");
+      $austmt->execute();
+      $auResult[]=$austmt->fetchAll();
+    }
   }
 
   if ($_POST) {
@@ -40,7 +43,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Widgets</title>
+  <title>Blog | site</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -80,13 +83,19 @@
                 <?php
                   if ($cmResult) {
                 ?>
-                  <div class="comment-text" style="margin-left:0px !important">
-                    <span class="username">
-                      <?php echo $auResult[0]['name'] ?>
-                      <span class="text-muted float-right"><?php echo $cmResult[0]['created_at'] ?></span>
-                    </span><!-- /.username -->
-                    <?php echo $cmResult[0]['content'] ?>
-                  </div>
+                <div class="comment-text" style="margin-left:0px !important">
+                  <?php
+                    foreach ($cmResult as $key => $value) {
+                  ?>
+                  <span class="username">
+                    <?php echo $auResult[$key][0]['name'] ?>
+                    <span class="text-muted float-right"><?php echo $value['created_at'] ?></span>
+                  </span><!-- /.username -->
+                  <?php echo $value['content'] ?>
+                  <?php
+                    }
+                  ?>
+                </div>
                 <?php
                 }
                 ?>

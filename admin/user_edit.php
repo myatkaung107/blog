@@ -9,6 +9,7 @@ if ($_POST) {
     $id = $_GET['id'];
     $name = $_POST['name'];
     $email = $_POST['email'];
+    $password= $_POST['password'];
     if (empty($_POST['role'])) {
       $role=0;
     }else {
@@ -24,7 +25,7 @@ if ($_POST) {
     if ($user) {
       echo "<script>alert('Email already used')</script>";
     }else {
-      $pdostmt= $pdo-> prepare("UPDATE users SET name='$name',email='$email',role='$role' WHERE id='$id'");
+      $pdostmt= $pdo-> prepare("UPDATE users SET name='$name',email='$email',password='$password',role='$role' WHERE id='$id'");
       $result=$pdostmt->execute();
       if ($result) {
         echo "<script>alert('User is updated');window.location.href='user_list.php';</script>";
@@ -34,6 +35,7 @@ if ($_POST) {
   $pdostmt=$pdo->prepare("SELECT * FROM users WHERE id=".$_GET['id']);
   $pdostmt->execute();
   $result=$pdostmt->fetchAll();
+
 ?>
 <?php include('header.php'); ?>
   <!-- Main content -->
@@ -46,11 +48,15 @@ if ($_POST) {
               <form class="" action="" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                   <label for="">Name</label>
-                  <input type="text" class="form-control" name="name" value="" required>
+                  <input type="text" class="form-control" name="name" value="<?php echo $result[0]['name']; ?>" required>
                 </div>
                 <div class="form-group">
                   <label for="">Email</label>
-                  <input type="email" class="form-control" name="email" value="" required>
+                  <input type="email" class="form-control" name="email" value="<?php echo $result[0]['email'] ?>" required>
+                </div>
+                <div class="form-group">
+                  <label for="">Password</label>
+                  <input type="password" class="form-control" name="password" value="<?php echo $result[0]['password'] ?>" required>
                 </div>
                 <div class="form-group">
                   <label for="vehicle3">Role</label><br>
