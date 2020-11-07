@@ -6,6 +6,7 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
   header('Location: login.php');
 }
 if ($_POST) {
+    $id = $_GET['id'];
     $name = $_POST['name'];
     $email = $_POST['email'];
     if (empty($_POST['role'])) {
@@ -14,24 +15,25 @@ if ($_POST) {
       $role=1;
     }
 
-    $pdostmt = $pdo -> prepare("SELECT * FROM users WHERE email = :email");
+    $pdostmt = $pdo -> prepare("SELECT * FROM users WHERE email = :email AND id!=:id");
     $pdostmt -> bindValue(':email',$email);
+    $pdostmt -> bindValue(':id',$id);
     $pdostmt -> execute();
     $user = $pdostmt -> fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
       echo "<script>alert('Email already used')</script>";
     }else {
-      $pdostmt= $pdo-> prepare("INSERT INTO users(name,email,role) VALUES (:name,:email,:role)");
-      $result=$pdostmt->execute(
-        array(
-          ':name'=>$name,':email'=>$email,':role'=>$role)
-      );
+      $pdostmt= $pdo-> prepare("UPDATE users SET name='$name',email='$email',role='$role' WHERE id='$id'");
+      $result=$pdostmt->execute();
       if ($result) {
-        echo "<script>alert('New user is added');window.location.href='user_list.php';</script>";
+        echo "<script>alert('User is updated');window.location.href='user_list.php';</script>";
       }
     }
   }
+  $pdostmt=$pdo->prepare("SELECT * FROM users WHERE id=".$_GET['id']);
+  $pdostmt->execute();
+  $result=$pdostmt->fetchAll();
 ?>
 <?php include('header.php'); ?>
   <!-- Main content -->
@@ -51,11 +53,11 @@ if ($_POST) {
                   <input type="email" class="form-control" name="email" value="" required>
                 </div>
                 <div class="form-group">
-                  <label for="vehicle3">Admin</label><br>
+                  <label for="vehicle3">Role</label><br>
                   <input type="checkbox" name="role" value="1">
                 </div>
                 <div class="form-group">
-                  <input type="submit" class="btn btn-outline-success" name="" value="Create">
+                  <input type="submit" class="btn btn-outline-success" name="" value="Update">
                   <a type="button" class="btn btn-outline-warning" href="user_list.php">Back</a>
                 </div>
               </form>

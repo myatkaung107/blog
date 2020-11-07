@@ -1,10 +1,14 @@
 <?php
 
 require '../config/config.php';
+session_start();
 
+if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
+  header('Location: login.php');
+}
 ?>
 
-<?php include('header.html') ?>
+<?php include('header.php') ?>
 
 <!-- Main content -->
 <div class="content">
@@ -16,12 +20,13 @@ require '../config/config.php';
             <h3 class="card-title">User Listings</h3>
           </div>
           <?php
+
             if (!empty($_GET['pageno'])) {
               $pageno = $_GET['pageno'];
             }else {
               $pageno = 1;
             }
-            $numOfrecs = 4;
+            $numOfrecs = 2;
             $offset = ($pageno - 1) * $numOfrecs;
 
             if (empty($_POST['search'])) {
@@ -69,18 +74,15 @@ require '../config/config.php';
               </thead>
               <tbody>
                 <?php
-                  $i = 1;
+                  $i= 1;
                   if ($result) {
                     foreach ($result as $value) {
-                      // print"<pre>";
-                      // print_r($result);
-                      // exit();
                  ?>
                  <tr>
                    <td><?php echo $i; ?></td>
                    <td><?php echo $value['name'] ?></td>
                    <td><?php echo $value['email']?></td>
-                   <td><?php echo $value['role'] ?></td>
+                   <td><?php if($value['role']==0){echo 'user';}else{echo 'admin';}?></td>
                    <td>
                      <div class="btn-group">
                        <div class="container">
@@ -96,10 +98,9 @@ require '../config/config.php';
                  </tr>
                 <?php
                   $i++;
+
                     }
-
                   }
-
                 ?>
               </tbody>
             </table><br>
@@ -128,5 +129,4 @@ require '../config/config.php';
   </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
-
 <?php include('footer.html') ?>

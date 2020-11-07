@@ -11,7 +11,7 @@ if ($_POST) {
   $id = $_POST['id'];
   $title = $_POST['title'];
   $content = $_POST['content'];
-  if ($_FILES['image']['name'] !=null) {  
+  if ($_FILES['image']['name'] !=null) {
     $file = 'images/'.($_FILES['image']['name']);
     $imageType = pathinfo($file,PATHINFO_EXTENSION);
     if ($imageType !='png' && $imageType !='jpg' && $imageType !='jpeg') {
@@ -43,7 +43,7 @@ $result=$pdostmt->fetchAll();
 ?>
 
 <?php
-include('header.html');
+include('header.php');
 ?>
 
     <!-- Main content -->

@@ -9,7 +9,7 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
 ?>
 
 <?php
-include('header.html');
+include('header.php');
 ?>
 
     <!-- Main content -->
@@ -36,7 +36,7 @@ include('header.html');
                   $pdostmt = $pdo -> prepare("SELECT * FROM posts ORDER BY id DESC");
                   $pdostmt-> execute();
                   $rawResult = $pdostmt->fetchAll();
-                  
+
                   $total_pages = ceil(count($rawResult)/$numOfrecs);
 
                   $pdostmt = $pdo -> prepare("SELECT * FROM posts ORDER BY id DESC LIMIT $offset,$numOfrecs");
