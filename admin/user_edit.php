@@ -66,15 +66,15 @@ if ($_POST) {
                 <input type="hidden" name="_token" value="<?php echo $_SESSION['_token'] ?>">
                 <div class="form-group">
                   <label for="">Name</label><p style="color:red"><?php echo empty($name_error) ? '':'*'.$name_error ?></p>
-                  <input type="text" class="form-control" name="name" value="<?php echo $result[0]['name']; ?>" >
+                  <input type="text" class="form-control" name="name" value="<?php echo escape($result[0]['name']) ?>" >
                 </div>
                 <div class="form-group">
                   <label for="">Email</label><p style="color:red"><?php echo empty($email_error) ? '':'*'.$email_error ?></p>
-                  <input type="email" class="form-control" name="email" value="<?php echo $result[0]['email'] ?>" >
+                  <input type="email" class="form-control" name="email" value="<?php echo escape($result[0]['email']) ?>" >
                 </div>
                 <div class="form-group">
                   <label for="">Password</label><p style="color:red"><?php echo empty($password_error) ? '':'*'.$password_error ?></p>
-                  <input type="password" class="form-control" name="password" value="<?php echo $result[0]['password'] ?>" >
+                  <input type="password" class="form-control" name="password" value="<?php echo escape($result[0]['password']) ?>" >
                 </div>
                 <div class="form-group">
                   <label for="vehicle3">Role</label><br>

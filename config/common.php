@@ -17,4 +17,8 @@
       unset($_SESSION['_token']);
     }
   }
+
+  function escape($html){
+    return htmlspecialchars($html , ENT_QUOTES| ENT_SUBSTITUTE, "UTF-8");
+  }
 ?>

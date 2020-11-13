@@ -69,12 +69,12 @@ $result = $pdostmt->fetchAll();
            <div class="card card-widget">
              <div class="card-header">
                <div style="float:none;text-align:center !important" class="card-title">
-                 <h4><?php echo $value['title'] ?></h4>
+                 <h4><?php echo escape($value['title']) ?></h4>
                </div>
              </div>
              <!-- /.card-header -->
              <div class="card-body">
-               <a href="blogdetail.php?id=<?php echo $value['id'] ?>"><img class="img-fluid pad" src="admin/images/<?php echo $value['image'] ?>" style="height:200px !important;"></a>
+               <a href="blogdetail.php?id=<?php echo $value['id'] ?>"><img class="img-fluid pad" src="admin/images/<?php escape(echo $value['image']) ?>" style="height:200px !important;"></a>
              </div>
            </div>
            <!-- /.card -->
