@@ -9,7 +9,8 @@ if ($_POST) {
     $pdostmt -> execute();
     $user = $pdostmt -> fetch(PDO::FETCH_ASSOC);
     if ($user) {
-      if ($user['password']==$password) {
+      // var_dump($user);exit();
+      if (password_verify($password,$user['password'])) {
         $_SESSION['user_id']=$user['id'];
         $_SESSION['username']=$user['name'];
         $_SESSION['logged_in']=time();
@@ -17,7 +18,7 @@ if ($_POST) {
         header('Location: index.php');
       }
     }
-      echo "<script>alert('Incorrect email or password')</script>";
+    echo "<script>alert('Incorrect email or password')</script>";
 }
 
 ?>
