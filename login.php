@@ -2,6 +2,7 @@
 session_start();
 require 'config/config.php';
 if ($_POST) {
+  
     $email = $_POST['email'];
     $password = $_POST['password'];
     $pdostmt = $pdo -> prepare("SELECT * FROM users WHERE email = :email");
