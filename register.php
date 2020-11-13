@@ -2,24 +2,40 @@
 session_start();
 require 'config/config.php';
 if ($_POST) {
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $password = $_POST['password'];
-  $pdostmt = $pdo -> prepare("SELECT * FROM users WHERE email = :email");
-  $pdostmt -> bindValue(':email',$email);
-  $pdostmt -> execute();
-  $user = $pdostmt -> fetch(PDO::FETCH_ASSOC);
-  if ($user) {
-    echo "<script>alert('Email already used')</script>";
+  if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password'])<4) {
+    if (empty($_POST['name'])) {
+      $name_error = 'Fill in name';
+    }
+    if (empty($_POST['email'])) {
+      $email_error = 'Fill in email';
+    }
+    if (empty($_POST['password'])) {
+      $password_error = 'Fill in password';
+    }elseif (strlen($_POST['password']) < 4) {
+      $password_error = 'Password must be at least 4 characters';
+    }
+
   }else {
-    $pdostmt = $pdo-> prepare("INSERT INTO users(name,email,password) VALUES (:name,:email,:password)");
-    $result = $pdostmt->execute(
-      array(':name'=>$name,':email'=>$email,':password'=>$password)
-    );
-    if ($result) {
-      echo "<script>alert('Registeration successfully,Please Login');window.location.href='login.php';</script>";
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $pdostmt = $pdo -> prepare("SELECT * FROM users WHERE email = :email");
+    $pdostmt -> bindValue(':email',$email);
+    $pdostmt -> execute();
+    $user = $pdostmt -> fetch(PDO::FETCH_ASSOC);
+    if ($user) {
+      echo "<script>alert('Email already used')</script>";
+    }else {
+      $pdostmt = $pdo-> prepare("INSERT INTO users(name,email,password) VALUES (:name,:email,:password)");
+      $result = $pdostmt->execute(
+        array(':name'=>$name,':email'=>$email,':password'=>$password)
+      );
+      if ($result) {
+        echo "<script>alert('Registeration successfully,Please Login');window.location.href='login.php';</script>";
+      }
     }
   }
+
 }
 
 ?>
@@ -55,14 +71,16 @@ if ($_POST) {
       <p class="login-box-msg">Register to start your session</p>
 
       <form action="register.php" method="post">
+        <p style="color:red"><?php echo empty($name_error) ? '':'*'.$name_error ?></p>
         <div class="input-group mb-3">
           <input type="text" name="name" class="form-control" placeholder="Name">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+              <span class="fas fa-user"></span>
             </div>
           </div>
         </div>
+        <p style="color:red"><?php echo empty($email_error) ? '':'*'.$email_error ?></p>
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
@@ -71,6 +89,7 @@ if ($_POST) {
             </div>
           </div>
         </div>
+        <p style="color:red"><?php echo empty($password_error) ? '':'*'.$password_error ?></p>
         <div class="input-group mb-3">
           <input type="password" name="password" class="form-control" placeholder="Password">
           <div class="input-group-append">
