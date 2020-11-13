@@ -6,6 +6,20 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
   header('Location: login.php');
 }
 if ($_POST) {
+  if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password'])<4) {
+    if (empty($_POST['name'])) {
+      $name_error = 'Fill in name';
+    }
+    if (empty($_POST['email'])) {
+      $email_error = 'Fill in email';
+    }
+    if (empty($_POST['password'])) {
+      $password_error = 'Fill in password';
+    }elseif (strlen($_POST['password']) < 4) {
+      $password_error = 'Password must be at least 4 characters';
+    }
+
+  }else {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password= $_POST['password'];
@@ -33,6 +47,7 @@ if ($_POST) {
       }
     }
   }
+}
 ?>
 <?php include('header.php'); ?>
   <!-- Main content -->
@@ -44,16 +59,16 @@ if ($_POST) {
             <div class="card-body">
               <form class="" action="" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                  <label for="">Name</label>
-                  <input type="text" class="form-control" name="name" value="" required>
+                  <label for="">Name</label><p style="color:red"><?php echo empty($name_error) ? '':'*'.$name_error ?></p>
+                  <input type="text" class="form-control" name="name" value="" >
                 </div>
                 <div class="form-group">
-                  <label for="">Email</label>
-                  <input type="email" class="form-control" name="email" value="" required>
+                  <label for="">Email</label><p style="color:red"><?php echo empty($email_error) ? '':'*'.$email_error ?></p>
+                  <input type="email" class="form-control" name="email" value="" >
                 </div>
                 <div class="form-group">
-                  <label for="">Password</label>
-                  <input type="password" class="form-control" name="password" value="" required>
+                  <label for="">Password</label><p style="color:red"><?php echo empty($password_error) ? '':'*'.$password_error ?></p>
+                  <input type="password" class="form-control" name="password" value="" >
                 </div>
                 <div class="form-group">
                   <label for="vehicle3">Admin</label><br>

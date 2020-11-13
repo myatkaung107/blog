@@ -25,14 +25,20 @@
   }
 
   if ($_POST) {
-    $comment = $_POST['comment'];
-      $pdostmt = $pdo-> prepare("INSERT INTO comments(content,author_id,post_id) VALUES (:content,:author_id,:post_id)");
-      $result = $pdostmt->execute(
-        array(':content'=>$comment,':author_id'=>$_SESSION['user_id'],':post_id'=>$blId=$_GET['id'])
-      );
-      if ($result) {
-        header('Location:blogdetail.php?id='.$blId);
+    if (empty($_POST['comment'])) {
+      if (empty($_POST['comment'])) {
+        $cmtError = 'Fill in comments';
       }
+    }else {
+      $comment = $_POST['comment'];
+        $pdostmt = $pdo-> prepare("INSERT INTO comments(content,author_id,post_id) VALUES (:content,:author_id,:post_id)");
+        $result = $pdostmt->execute(
+          array(':content'=>$comment,':author_id'=>$_SESSION['user_id'],':post_id'=>$blId=$_GET['id'])
+        );
+        if ($result) {
+          header('Location:blogdetail.php?id='.$blId);
+        }
+    }
   }
 
 
@@ -108,6 +114,7 @@
             <div class="card-footer">
               <form action="" method="post">
                 <div class="img-push">
+                  <p style="color:red"><?php echo empty($cmtError) ? '':'*'.$cmtError ?></p>
                   <input type="text" name="comment" class="form-control form-control-sm" placeholder="Press enter to post comment">
                 </div>
               </form>
