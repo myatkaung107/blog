@@ -1,5 +1,6 @@
 <?php
 require '../config/config.php';
+require '../config/common.php';
 session_start();
 
 if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
@@ -58,6 +59,7 @@ if ($_POST) {
           <div class="card">
             <div class="card-body">
               <form class="" action="" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="_token" value="<?php echo $_SESSION['_token'] ?>">
                 <div class="form-group">
                   <label for="">Name</label><p style="color:red"><?php echo empty($name_error) ? '':'*'.$name_error ?></p>
                   <input type="text" class="form-control" name="name" value="" >
