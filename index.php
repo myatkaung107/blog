@@ -2,6 +2,7 @@
 
 session_start();
 require 'config/config.php';
+require 'config/common.php';
 if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
   header('Location: login.php');
 }
@@ -74,7 +75,7 @@ $result = $pdostmt->fetchAll();
              </div>
              <!-- /.card-header -->
              <div class="card-body">
-               <a href="blogdetail.php?id=<?php echo $value['id'] ?>"><img class="img-fluid pad" src="admin/images/<?php escape(echo $value['image']) ?>" style="height:200px !important;"></a>
+               <a href="blogdetail.php?id=<?php echo $value['id'] ?>"><img class="img-fluid pad" src="admin/images/<?php echo escape($value['image']) ?>" style="height:200px !important;"></a>
              </div>
            </div>
            <!-- /.card -->
